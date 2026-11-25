@@ -499,7 +499,9 @@ fn other_script(c: char) -> bool {
 
 /// Where DIE's own fonts are: `option` if set, else die-render's rule, which an extension
 /// can't reach and so repeats: `$DIE_FONT_DIR`, else the app bundle's
-/// `Contents/Resources/fonts`, else `fonts/` at the workspace root.
+/// `Contents/Resources/fonts`. die-render's last resort is `fonts/` in DIE's checkout, which
+/// a crate outside it can't find from its own manifest, so this one's is the `$DIE_FONT_DIR`
+/// it was built with (a dev config's `[env]` sets it), else `fonts/` in the working directory.
 pub fn font_dir(option: Option<&Path>) -> PathBuf {
     if let Some(d) = option {
         return d.to_path_buf();
@@ -512,7 +514,7 @@ pub fn font_dir(option: Option<&Path>) -> PathBuf {
     let exe = exe.map(|e| e.canonicalize().unwrap_or(e));
     match exe.as_deref().and_then(bundle_of) {
         Some(bundle) => bundle.join("Contents/Resources/fonts"),
-        None => PathBuf::from(concat!(env!("CARGO_MANIFEST_DIR"), "/../../fonts")),
+        None => PathBuf::from(option_env!("DIE_FONT_DIR").unwrap_or("fonts")),
     }
 }
 

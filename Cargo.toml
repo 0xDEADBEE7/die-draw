@@ -1,23 +1,31 @@
 [package]
 name = "die-draw"
-description = "The extensions' shared drawing: the system's fonts set as text runs, a premultiplied RGBA8 blit with clipping, PNG in and out, and the pasteboard's and opener's command lines (scope D14)"
-version.workspace = true
-edition.workspace = true
-rust-version.workspace = true
-license.workspace = true
-publish.workspace = true
+description = "The DIE extensions' shared drawing: the system's fonts set as text runs, a premultiplied RGBA8 blit with clipping, PNG in and out, and the pasteboard's and opener's command lines"
+version = "0.0.0"
+edition = "2024"
+rust-version = "1.95"
+license = "MIT OR Apache-2.0"
+publish = false
 
-# Shared by the extensions, outside the product: it depends on none of DIE's crates, so any
-# extension may depend on it (`cargo xtask lint` checks), and it moves out at M4 with the
-# extensions that use it. tiny-skia fills glyph outlines, ttf-parser reads the fonts, png reads
-# and writes pictures; each stays behind its own module.
+# Shared by DIE's extensions, outside DIE itself: it depends on none of DIE's crates, so any
+# extension may depend on it. tiny-skia fills glyph outlines, ttf-parser reads the fonts, png
+# reads and writes pictures; each stays behind its own module. The pins are DIE's own, with its
+# features, so an extension's build and DIE's resolve to one copy of each.
 [dependencies]
-tiny-skia.workspace = true
-ttf-parser.workspace = true
-png.workspace = true
+tiny-skia = { version = "=0.12.0", default-features = false, features = ["std", "simd"] }
+# "gvar-alloc" is what gives a variable font's outlines.
+ttf-parser = { version = "=0.25.1", default-features = false, features = ["std", "opentype-layout", "apple-layout", "variable-fonts", "gvar-alloc"] }
+png = "=0.18.1"
 
+# The memory limit inside every test binary, as in DIE. Built from DIE's main; a local
+# .cargo/config.toml points it at a checkout (see dev-config.example.toml).
 [dev-dependencies]
-die-test-cap.workspace = true
+die-test-cap = { git = "https://github.com/0xDEADBEE7/die", branch = "main" }
 
-[lints]
-workspace = true
+[lints.rust]
+unsafe_code = "forbid"
+
+# As in DIE: the font tests set and draw text in every family the machine has, slow unoptimized.
+[profile.test]
+opt-level = 1
+debug = "line-tables-only"

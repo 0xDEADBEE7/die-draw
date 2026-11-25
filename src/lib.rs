@@ -1,6 +1,6 @@
-//! die-draw: the drawing the extensions share, lifted from die-markdown under the rule of two
-//! (scope D11, D14). It depends on none of DIE's crates, so any extension may use it, and it
-//! knows nothing of the editor. Its parts:
+//! die-draw: the drawing DIE's extensions share, lifted from die-markdown under the rule of
+//! two (DIE's scope D11, D14). It depends on none of DIE's crates, so any extension may use it,
+//! and it knows nothing of the editor. Its parts:
 //!
 //! - `fonts`: the system's fonts and DIE's own, found by looking, and text set in them a
 //!   character at a time ([`Book`], [`Pass`], [`Run`]), with each glyph's coverage ([`Mask`]);
