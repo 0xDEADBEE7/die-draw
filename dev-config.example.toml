@@ -1,12 +1,13 @@
 # Copy to .cargo/config.toml (gitignored) to build and test die-draw against a DIE checkout
-# rather than DIE's main on GitHub. Write each /abs/path/to/die out as
-# your DIE checkout's absolute path.
+# rather than DIE's main on GitHub. The paths assume DIE is checked out beside this repository
+# (../die): cargo reads a relative path here from this repository's root, the directory
+# holding .cargo/.
 
 # die-draw's one DIE crate is a dev-dependency: the memory limit in its test binaries.
 [patch."https://github.com/0xDEADBEE7/die"]
-die-test-cap = { path = "/abs/path/to/die/tools/test-cap" }
+die-test-cap = { path = "../die/tools/test-cap" }
 
 # Where DIE's own fonts are (`cargo xtask fonts` in the DIE checkout fetches them). The tests
 # read them, and so does a build: see font_dir in src/fonts.rs.
 [env]
-DIE_FONT_DIR = "/abs/path/to/die/fonts"
+DIE_FONT_DIR = { value = "../die/fonts", relative = true }
