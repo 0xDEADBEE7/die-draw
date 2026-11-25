@@ -4,8 +4,9 @@ The drawing [DIE](https://github.com/0xDEADBEE7/die)'s extensions share: the sys
 set as lines of text, a premultiplied RGBA8 blit with clipping, PNG in and out, and the command
 lines that put a PNG on the pasteboard or open a file. It's a library, with no keys and no
 commands of its own, and it depends on none of DIE's crates, so any extension may use it. It
-was lifted from die-markdown's typesetter once die-fig needed the same text. die-markdown and
-die-fig draw with it.
+was lifted from [die-markdown](https://github.com/0xDEADBEE7/die-markdown)'s typesetter once
+[die-fig](https://github.com/0xDEADBEE7/die-fig) needed the same text. die-markdown and die-fig
+draw with it.
 
 ## What it draws
 
@@ -57,8 +58,9 @@ by looking, at run time, wherever they are.
 
 ## Installing it in die-config
 
-There's nothing to install: die-draw isn't an extension, and die-config lists none of it. An
-extension that draws depends on it:
+There's nothing to install: die-draw isn't an extension, and
+[die-config](https://github.com/0xDEADBEE7/die-config) lists none of it. An extension that draws
+depends on it:
 
 ```toml
 [dependencies]
